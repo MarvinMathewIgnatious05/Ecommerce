@@ -91,7 +91,7 @@ def delete_cart(request):
 
 
 @login_required(login_url="user_login")
-def bill(request):
+def checkout(request):
     # return HttpResponse("NETWORK ERROR PLZ wait")
 
     cart_products = Cart.objects.filter(user=request.user).all()
@@ -99,7 +99,7 @@ def bill(request):
     total_price = sum(item.product_id.price * item.quantity for item in cart_products)
 
 
-    return render(request, "bill.html",{"total_price":total_price})
+    return render(request, "checkout.html",{"total_price":total_price})
 
 
 

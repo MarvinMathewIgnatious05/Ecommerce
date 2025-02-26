@@ -15,7 +15,7 @@ class Payment(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.SET_NULL, null=True, blank=True)
     product = models.ManyToManyField(Product)
     paypal_payment_id = models.CharField(max_length=100, unique=True)
-    paypal_sale_id = models.CharField(max_length=100, blank=True, null=True)
+    paypal_sale_id = models.CharField(max_length=100, null=True, blank=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="PENDING")
     created_on = models.DateTimeField(auto_now_add=True)

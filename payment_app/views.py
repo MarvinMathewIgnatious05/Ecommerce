@@ -11,12 +11,6 @@ from product_management_app.models import Product
 
 
 
-
-
-
-
-
-
 # Configure PayPal
 paypalrestsdk.configure({
     "mode": settings.PAYPAL_MODE,
@@ -68,49 +62,97 @@ def create_payment(request):
 
 def payment_success(request):
     payment_id = request.GET.get("paymentId")
-    payment = Payment.objects.get(paypal_payment_id=payment_id)
+    payer_id = request.GET.get("PayerID")
 
-    if payment:
-        payment.status = "COMPLETED"
-        payment.save()
-        return render(request, "success.html")
+    try:
+        payment = paypalrestsdk.Payment.find(payment_id)
+        if payment.execute({"payer_id": payer_id}):
+            # Find the sale ID from the transaction
+            sale_id = None
+            for transaction in payment.transactions:
+                for resource in transaction.related_resources:
+                    if 'sale' in resource:
+                        sale_id = resource['sale']['id']
+                        break
 
-    return render(request, "error.html", {"error": "Invalid Payment ID"})
+            # Update the database with the sale ID
+            db_payment = Payment.objects.get(paypal_payment_id=payment_id)
+            db_payment.status = "COMPLETED"
+            db_payment.paypal_sale_id = sale_id  # Store Sale ID
+            db_payment.save()
+
+            return render(request, "payment_success.html", {
+                            "payment_id": db_payment.paypal_payment_id,
+                            "sale_id": db_payment.paypal_sale_id,  # Show in template
+                            "amount": db_payment.amount
+                        })
+        else:
+            return render(request, "error.html", {"error": "Payment execution failed."})
+
+    except Payment.DoesNotExist:
+        return render(request, "error.html", {"error": "Payment not found."})
+
+
+
+
+
+# def payment_success(request):
+#     payment_id = request.GET.get("paymentId")
+#     payment = Payment.objects.get(paypal_payment_id=payment_id)
+#
+#     if payment:
+#         payment.status = "COMPLETED"
+#         payment.save()
+#         return render(request, "payment_success.html")
+#
+#     return render(request, "error.html", {"error": "Invalid Payment ID"})
 
 
 def payment_cancel(request):
-    return render(request, "cancel.html")
+    return render(request, "payment_cancel.html")
 
 
 
 
 
 
-def payment_refund(request, id):
-    payment = Payment.objects.filter(paypal_payment_id=id).first()
 
-    if not payment:
-        return HttpResponse("<h2>Payment not found</h2>", content_type="text/html")
 
-    if payment.status != "COMPLETED":
-        return HttpResponse("<h2>Payment is not completed</h2>", content_type="text/html")
+# Refund Payment View
+def refund_payment(request, payment_id):
+    try:
+        payment = Payment.objects.get(paypal_payment_id=payment_id)
+        if payment.status != "COMPLETED":
+            return render(request, "error.html", {"error": "Only completed payments can be refunded."})
 
-    if not payment.paypal_sale_id:
-        return HttpResponse("<h2>Sale ID not found</h2>", content_type="text/html")
+        sale_id = None
+        paypal_payment = paypalrestsdk.Payment.find(payment_id)
 
-    sale = paypalrestsdk.Sale.find(payment.paypal_sale_id)
-    refund = sale.refund({
-        "amount": {
-            "total": str(payment.amount),
-            "currency": "USD"
-        }
-    })
+        for transaction in paypal_payment.transactions:
+            for related_resource in transaction.related_resources:
+                if 'sale' in related_resource:
+                    sale_id = related_resource['sale']['id']
+                    break
 
-    if refund.success():
-        payment.status = "REFUNDED"
-        payment.save()
-        return HttpResponse("<h2>Refund successful</h2>", content_type="text/html")
+        if not sale_id:
+            return render(request, "error.html", {"error": "Sale ID not found for refund."})
 
-    return HttpResponse("<h2>Refund failed</h2>", content_type="text/html")
+        sale = paypalrestsdk.Sale.find(sale_id)
+        refund = sale.refund({
+            "amount": {
+                "total": str(payment.amount),  # Ensure total is a string
+                "currency": "USD"
+            }
+        })
 
+
+        if refund.success():
+            payment.status = "REFUNDED"
+            payment.save()
+            return render(request, "refund_success.html")
+        else:
+            return render(request, "error.html", {"error": refund.error})
+
+    except Payment.DoesNotExist:
+        return render(request, "error.html", {"error": "Payment not found."})
 

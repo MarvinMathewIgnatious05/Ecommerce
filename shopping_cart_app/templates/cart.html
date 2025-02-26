@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Shopping Cart</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+          #navbar {
+        position: sticky;
+        top: 0;
+        overflow: hidden;
+        background-color: #333;
+        z-index: 1000;
+    }
+
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #333;
+            font-size: x-large;
+        }
+        li {
+            float: left;
+        }
+        li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+        li a:hover:not(.active) {
+            background-color: #04AA6D;
+        }
+        .active {
+            background-color: #04AA6D;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        p {
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            color: red;
+            margin-top: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .cart-item {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 20px;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+        }
+        img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        .details {
+            text-align: left;
+        }
+        .details h2 {
+            margin: 5px 0;
+            font-size: 18px;
+            color: #333;
+        }
+        .price {
+            font-size: 16px;
+            font-weight: bold;
+            color: #555;
+        }
+        .quantity-input {
+            width: 50px;
+            padding: 5px;
+            font-size: 16px;
+            text-align: center;
+        }
+        .btn {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            font-size: 14px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+            text-decoration: none;
+        }
+        .btn:hover {
+            background-color: #218838;
+        }
+        .delete-btn {
+            background-color: #dc3545;
+        }
+        .delete-btn:hover {
+            background-color: #c82333;
+        }
+        .delete-btn-btn {
+            background-color: #dc3545;
+            text-align:center;
+            padding: 14px 30px;
+        }
+        .delete-btn-btn:hover {
+            background-color: #FFCCCB;
+
+        }
+        .buy {
+            background-color: orange;
+            color: white;
+            padding: 10px 52px;
+            font-size: 14px;
+            font-weight: 900;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size:20px;
+
+        }
+        .buy:hover {
+            background-color: #c82333;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+<div id="navbar">
+    <ul>
+        <li><a href="{% url 'product_management_app:viewproduct' %}">Home</a></li>
+        <li><a href="{% url 'product_management_app:contact' %}">Contact</a></li>
+        <li style="float:right"><a href="/" style="color:red">Logout</a></li>
+        <li class="active"><a href="{% url 'shopping_cart_app:list_cart' %}">Cart</a></li>
+    </ul>
+</div>
+<hr>
+<center><h1>Shopping Cart</h1></center>
+<br><br>
+<div class="container">
+    <a class="btn" href="/view_product/">⬅ Back to Products</a>
+    <br><br>
+
+    {% for item in products %}
+    <div class="cart-item">
+        <img src="{{ item.product_id.images.url }}" alt="Product Image">
+        <div class="details">
+            <h2>{{ item.product_id.name }} - ${{ item.product_id.price }}</h2>
+            <p class="price">Quantity: {{ item.quantity }}</p>
+
+            <div class="actions">
+                <button class="btn delete-btn">
+                    <a href="{% url 'shopping_cart_app:remove_cart' item.id %}" style="color: white; text-decoration: none;">Remove</a>
+                </button>
+
+                <form action="{% url 'shopping_cart_app:update_cart' item.id %}" method="POST">
+                    {% csrf_token %}
+                    <input type="number" name="quantity" class="quantity-input" value="{{ item.quantity }}" min="1">
+                    <button type="submit" class="btn">Update</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    <br>
+    <center><button class="btn  delete-btn-btn">
+
+        <a href="{% url 'shopping_cart_app:delete_cart'  %}" style="color: white; text-decoration: none;">Delete All</a>
+    </button></center>
+
+    <br><br>
+
+    <center><p>subtotal: ${{ total_price }}</p></center>
+
+    <br><br>
+    <p style="color:green">proceed to buy {{ total_item }}(item)</p>
+     <a href="{% url 'shopping_cart_app:bill_receipt' %}">
+         <center><p><button class="buy" type="button">Buy</button></p></center>
+<!--         <a href="{% url 'create_payment' %}" class="btn btn-primary">Pay with PayPal</a>-->
+                </a>
+<!--    <center><button class="buy"><a style="font-size:20px;" href="/bill" >Buy</a></button></center>-->
+</div>
+</body>
+</html>
+

@@ -1,0 +1,310 @@
+<!--&lt;!&ndash;<!DOCTYPE html>&ndash;&gt;-->
+<!--&lt;!&ndash;<html lang="en">&ndash;&gt;-->
+<!--&lt;!&ndash;<head>&ndash;&gt;-->
+<!--&lt;!&ndash;    <meta charset="UTF-8">&ndash;&gt;-->
+<!--&lt;!&ndash;    <title>Title</title>&ndash;&gt;-->
+<!--&lt;!&ndash;    <style>&ndash;&gt;-->
+<!--&lt;!&ndash;          ul&ndash;&gt;-->
+<!--&lt;!&ndash;    {&ndash;&gt;-->
+<!--&lt;!&ndash;        list-style-type: none;&ndash;&gt;-->
+<!--&lt;!&ndash;        margin: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;        padding: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;        overflow: hidden;&ndash;&gt;-->
+<!--&lt;!&ndash;        background-color: #333;&ndash;&gt;-->
+<!--&lt;!&ndash;        font-size: x-large;&ndash;&gt;-->
+<!--&lt;!&ndash;        position: sticky;&ndash;&gt;-->
+
+<!--&lt;!&ndash;    }&ndash;&gt;-->
+<!--&lt;!&ndash;    li&ndash;&gt;-->
+<!--&lt;!&ndash;    {&ndash;&gt;-->
+<!--&lt;!&ndash;        float: left;&ndash;&gt;-->
+<!--&lt;!&ndash;    }&ndash;&gt;-->
+<!--&lt;!&ndash;    li a&ndash;&gt;-->
+<!--&lt;!&ndash;    {&ndash;&gt;-->
+<!--&lt;!&ndash;        display: block;&ndash;&gt;-->
+<!--&lt;!&ndash;        color: white;&ndash;&gt;-->
+<!--&lt;!&ndash;        text-align: center;&ndash;&gt;-->
+<!--&lt;!&ndash;        padding: 14px 16px;&ndash;&gt;-->
+<!--&lt;!&ndash;        text-decoration: none;&ndash;&gt;-->
+<!--&lt;!&ndash;    }&ndash;&gt;-->
+<!--&lt;!&ndash;    li a:hover:not(.active)&ndash;&gt;-->
+<!--&lt;!&ndash;    {&ndash;&gt;-->
+<!--&lt;!&ndash;        background-color: #04AA6D;&ndash;&gt;-->
+<!--&lt;!&ndash;    }&ndash;&gt;-->
+<!--&lt;!&ndash;          .active {&ndash;&gt;-->
+<!--&lt;!&ndash;            background-color: #04AA6D;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;    </style>&ndash;&gt;-->
+<!--&lt;!&ndash;</head>&ndash;&gt;-->
+<!--&lt;!&ndash;<body>&ndash;&gt;-->
+<!--&lt;!&ndash;    <ul>&ndash;&gt;-->
+
+<!--&lt;!&ndash;        <li><a href="{% url 'product_management_app:viewproduct' %}">Home</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        <li><a href="#news">News</a></li>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;        <li><a class="active" href="{% url 'product_management_app:about'%}">About</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;        <li style="float:right"><a href="/" style="color:red" >logout</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        <li><a href="{% url 'shopping_cart_app:list_cart'%}">Cart</a></li>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        <li><a href="{% url 'product_management_app:about'%}">About</a></li>&ndash;&gt;&ndash;&gt;-->
+
+
+<!--&lt;!&ndash;    </ul>&ndash;&gt;-->
+<!--&lt;!&ndash;    <hr>&ndash;&gt;-->
+<!--&lt;!&ndash;<br><br>&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;<h1>About Us</h1>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;    <center><p><strong style="font-size:30px;">The best way to predict the future of ecommerce is to create it</strong></p></center>&ndash;&gt;-->
+
+<!--&lt;!&ndash;</body>&ndash;&gt;-->
+<!--&lt;!&ndash;</html>&ndash;&gt;-->
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>About Us - Shoe Store</title>-->
+<!--    <style>-->
+<!--        body {-->
+<!--            font-family: Arial, sans-serif;-->
+<!--            margin: 0;-->
+<!--            padding: 0;-->
+<!--            background-color: #f5f5f5;-->
+<!--            text-align: center;-->
+<!--        }-->
+<!--        .container {-->
+<!--            width: 80%;-->
+<!--            margin: auto;-->
+<!--            padding: 20px;-->
+<!--            background: white;-->
+<!--            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);-->
+<!--            border-radius: 10px;-->
+<!--            margin-top: 50px;-->
+<!--        }-->
+<!--        h1 {-->
+<!--            color: #333;-->
+<!--        }-->
+<!--        p {-->
+<!--            color: #666;-->
+<!--            line-height: 1.6;-->
+<!--        }-->
+<!--        .logo {-->
+<!--            width: 150px;-->
+<!--            margin: 20px 0;-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--    <div class="container">-->
+<!--        <img src="logo.png" alt="Shoe Store Logo" class="logo">-->
+<!--        <h1>About Us</h1>-->
+<!--        <p>Welcome to Shoe Store, your number one source for stylish and comfortable shoes. We're dedicated to giving you the very best of footwear, with a focus on quality, customer service, and uniqueness.</p>-->
+<!--        <p>Founded in 2023, Shoe Store has come a long way from its beginnings. We hope you enjoy our products as much as we enjoy offering them to you.</p>-->
+<!--        <p><strong>Happy Shopping!</strong></p>-->
+<!--    </div>-->
+
+<!--</body>-->
+<!--</html>-->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Your E-Commerce App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            background-color: #f7f7f7;
+        }
+
+        /* Navbar Styling */
+        .navbar {
+            background-color: #232f3e;
+            overflow: hidden;
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 25px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        .navbar ul {
+            list-style-type: none;
+            display: flex;
+        }
+        .navbar li {
+            padding: 0 15px;
+        }
+        .navbar a {
+            text-decoration: none;
+            color: white;
+            font-size: 18px;
+            padding: 8px 12px;
+            transition: 0.3s;
+        }
+        .navbar a:hover, .navbar .active {
+            background-color: green;
+            border-radius: 4px;
+        }
+        .navbar .logout {
+            color: red;
+            font-weight: bold;
+        }
+
+        /* Header */
+        header {
+            background-color: grey;
+            color: white;
+            padding: 60px 20px 20px;
+            text-align: center;
+            font-size: 25px;
+        }
+
+        /* Content */
+        .container {
+            max-width: 1000px;
+            margin: 80px auto 40px;
+            padding: 100px;
+            background: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+
+        }
+        h1 {
+            text-align: center;
+            color: #232f3e;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #333;
+            text-align: justify;
+        }
+        .highlight {
+            font-weight: bold;
+            color: #ff9900;
+        }
+
+        /* Features Section */
+        .features {
+            margin-top: 30px;
+        }
+        .feature-box {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+        }
+        .feature-box img {
+            width: 50px;
+            height: 50px;
+            margin-right: 15px;
+        }
+        .feature-box p {
+            margin: 0;
+            font-size: 16px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #232f3e;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            margin-top: 30px;
+            font-size: 14px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                text-align: center;
+            }
+            .navbar ul {
+                flex-direction: column;
+                padding: 10px 0;
+            }
+            .navbar li {
+                padding: 5px 0;
+            }
+            .container {
+                margin: 100px auto 40px;
+                padding: 15px;
+            }
+        }
+        .pp{
+        text-align:center;
+        font-size:25px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <ul>
+            <li><a href="{% url 'product_management_app:viewproduct' %}">Home</a></li>
+<!--            <li><a  href="{% url 'product_management_app:contact' %}">Contact</a></li>-->
+            <li><a class="active" href="{% url 'product_management_app:about' %}">About</a></li>
+        </ul>
+        <ul>
+            <li><a class="logout" href="/">Logout</a></li>
+        </ul>
+    </nav>
+    <br><br>
+
+
+    <!-- Header -->
+    <header >
+        About Us - Easy
+    </header>
+    <br><br>
+
+    <!-- About Us Section -->
+    <div class="container">
+        <h1>Welcome to <span class="highlight"> Easy</span></h1>
+        <br><br>
+        <p>
+            At <span class="highlight">Your Easy</span>, we are committed to providing the best online shopping experience.
+            From high-quality products to seamless customer service, we ensure a smooth and enjoyable journey for all our customers.
+        </p>
+
+        <div class="features">
+            <div class="feature-box">
+                <img src="https://cdn-icons-png.flaticon.com/512/482/482469.png" alt="Quality Products">
+                <p><strong>High-Quality Products:</strong> We offer only the best products from trusted sellers.</p>
+            </div>
+            <div class="feature-box">
+                <img src="https://cdn-icons-png.flaticon.com/512/1995/1995487.png" alt="Fast Delivery">
+                <p><strong>Fast & Reliable Delivery:</strong> Get your orders delivered quickly and safely.</p>
+            </div>
+            <div class="feature-box">
+                <img src="https://cdn-icons-png.flaticon.com/512/1077/1077114.png" alt="Customer Support">
+                <p><strong>24/7 Customer Support:</strong> We are here to help you anytime, anywhere.</p>
+            </div>
+            <div class="feature-box">
+                <img src="https://cdn-icons-png.flaticon.com/512/3500/3500833.png" alt="Secure Payments">
+                <p><strong>Secure Payments:</strong> Your transactions are safe with our trusted payment system.</p>
+            </div>
+
+        </div>
+    </div>
+
+
+    <footer>
+        &copy; 2025 Your Easy | All Rights Reserved | Privacy Policy | Terms & Conditions
+    </footer>
+
+</body>
+</html>

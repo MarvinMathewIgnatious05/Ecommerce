@@ -1,0 +1,186 @@
+
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | Easy App</title>
+    <style>
+        /* Navbar */
+          ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            background-color: #333;
+            font-size: x-large;
+            position: fixed; /* Keep navbar at the top */
+            top: 0;
+
+            width: 100%;
+            z-index: 1000; /* Ensures it stays above all elements */
+            display: flex;
+        }
+        li {
+            float: left;
+        }
+        li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+        li a:hover:not(.active) {
+            background-color: #04AA6D;
+        }
+        .active {
+            background-color: #04AA6D;
+        }
+         .logout {
+            margin-left: auto;
+        }
+
+
+        body {
+            background-image: url("{% static 'images/contact_page.jpg' %} ");
+
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding-top: 50px; /* Space for sticky navbar */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+            body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("{% static 'images/contact_page.jpg' %}") no-repeat center center/cover;
+            filter: blur(10px);
+            z-index: -1;
+        }
+
+        h1{
+            text-align: center;
+            font-size: 40px;
+            color: #333;
+        }
+        h2{
+         text-align: center;
+            font-size: 30px;
+            color: #26619c;
+        }
+
+        p {
+            text-align: center;
+            font-size: 18px;
+        }
+
+        /* Contact */
+        .content-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 50%;
+        }
+
+        .contact, .contact-form {
+            background: white;
+            padding: 20px;
+            width: 50%;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            margin: 10px 0;
+            text-align: center;
+        }
+
+        .contact a {
+            color: #04AA6D;
+            text-decoration: none;
+        }
+        .contact a:hover {
+            text-decoration: underline;
+        }
+
+        /* Contact Form */
+        .contact-form form {
+            width: 100%;
+        }
+
+        .contact-form input, .contact-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .contact-form button {
+            background: #04AA6D;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 5px;
+            width: 100%;
+        }
+
+        .contact-form button:hover {
+            background: #038f5a;
+        }
+
+        /* Responsive Design */
+        @media screen and (max-width: 768px) {
+            .contact, .contact-form {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <ul>
+        <li><a href="{% url 'product_management_app:viewproduct' %}">Home</a></li>
+        <li><a class="active" href="{% url 'product_management_app:contact' %}">Contact</a></li>
+        <li  class="logout" style="float:right"><a href="/" style="color:red"  >logout</a></li>
+    </ul>
+
+    <div class="content-wrapper">
+        <br><br>
+        <h1>Contact Us</h1>
+        <br><br>
+
+        <div class="contact">
+            <p>Email: <a href="mailto:support@gmail.com">support@gmail.com</a></p>
+            <p>Phone: +1 234 567 890</p>
+            <p>Follow us on:
+                <a href="#">Facebook</a> |
+                <a href="#">Twitter</a> |
+                <a href="#">Instagram</a>
+            </p>
+        </div>
+
+        <div class="contact-form">
+            <h2>Send Us a Message</h2>
+            <form method="post" action="" style="width:546px;">
+                {% csrf_token %}
+                <input type="text" name="name" placeholder="Your Name" required>
+                <input type="email" name="email" placeholder="Your Email" required>
+                <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
+                <button type="submit" style="width:570px;">Send Message</button>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

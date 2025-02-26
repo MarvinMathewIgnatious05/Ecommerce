@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Product Details</title>
+
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        #navbar {
+        position: sticky;
+        top: 0;
+        overflow: hidden;
+        background-color: #333;
+        z-index: 1000;
+    }
+        ul
+    {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #333;
+            font-size: x-large;
+    }
+    li
+    {
+        float: left;
+    }
+    li a
+    {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+    }
+    li a:hover:not(.active)
+    {
+        background-color: #04AA6D;
+    }
+       .active
+    {
+        background-color: #04AA6D;
+    }
+        .card {
+            max-width: 670px;
+            margin: 50px auto;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+         .btn{
+             font-size: 17px;
+    font-weight: 400;
+    padding: 10px;
+    padding-block: revert-layer;
+    color: rebeccapurple;
+
+         }
+        .product-image {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+        .price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #28a745;
+        }
+        .stock {
+            font-weight: bold;
+        }
+        .tags {
+
+            color: red;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight:600;
+            font-size:22px;
+        }
+        .quantity{
+        font-size:22px;
+        font-weight:600;
+        }
+        .btn-add{
+         background-color: #28a745;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        font-size: 16px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s;
+        margin-top: 10px;
+
+        }
+        .name{
+        color:blue;
+
+        }
+
+    </style>
+</head>
+<body>
+<div id="navbar">
+<ul>
+        <li><a class="float:right" href="{% url 'product_management_app:viewproduct' %}">Home</a></li>
+<!--        <li><a href="#news">News</a></li>-->
+        <li><a href="#contact">Contact</a></li>
+        <li style="float:right"><a href="/" style="color:red" >logout</a></li>
+<!--        <li style="float:right"><a href="{% url 'shopping_cart_app:list_cart'%}">Cart</a></li>-->
+        <li class="active"><a href="{% url 'product_management_app:productdetails' product_detail.id  %}">View</a></li>
+
+    </ul>
+</div>
+<hr>
+
+<div class="container">
+
+    <div class="card">
+<!--        <a class="btn" href="/view_product/">⬅ </a>-->
+        <img src="/media/{{ product_detail.images }}" alt="Product Image" class="product-image">
+        <h2>{{ product_detail.name }}</h2>
+        <p class="price">$ {{ product_detail.price }}</p>
+        <p class="text">{{ product_detail.description }}</p>
+                <p class="quantity">Quantity: {{ product_detail.stock_availability }}</p>
+        <p class="tags">{{ product_detail.tags }}</p>
+        <br><br>
+        <center><button class="btn-add"><a href="{% url 'shopping_cart_app:create_cart' product_detail.id %}">Add to Cart</a></button></center>
+
+    </div>
+</div>
+
+
+
+</body>
+</html>

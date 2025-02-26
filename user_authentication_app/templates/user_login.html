@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <style>
+        body {
+            background-image: url("{% static 'images/login_image_1.jpg' %}"); /* Replace with your actual image */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+        }
+
+        .login-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            width: 350px;
+            text-align: center;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            width: 100%;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .message {
+            margin-top: 15px;
+            color: red;
+        }
+
+        .register-link {
+            display: block;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-container">
+    <h1>LOGIN</h1>
+    <form action="" method="post" enctype="multipart/form-data" id="loginForm">
+        {% csrf_token %}
+        <label>Username:</label>
+        <input placeholder="Enter username" type="text" name="username" required>
+
+        <label>Password:</label>
+        <input placeholder="Enter password" type="password" name="password" required>
+
+        <button type="submit" name="submit">Login</button>
+
+        <a href="user_registration" class="register-link">Create new account? Register</a>
+    </form>
+
+            <br><br>
+            {% if messages %}
+            {% for message in messages %}
+
+                <div class="alert{{message.tags}}" style="color:red; font-size:20px;" >
+                   <center>{{message}}</center>
+                </div>
+            {% endfor %}
+        {% endif %}
+</div>
+
+</body>
+</html>

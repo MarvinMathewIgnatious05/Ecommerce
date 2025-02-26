@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+
+    <title>Product List</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 20px;
+    }
+
+    #navbar {
+        position: sticky;
+        top: 0;
+        overflow: hidden;
+        background-color: #333;
+        z-index: 1000;
+    }
+
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #333;
+        font-size: x-large;
+    }
+
+    li {
+        float: left;
+    }
+
+    li a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+    }
+
+    li a:hover:not(.active) {
+        background-color: #04AA6D;
+    }
+
+    .active {
+        background-color: #04AA6D;
+    }
+
+    h1 {
+        text-align: center;
+        font-style: italic;
+    }
+
+    h2 {
+        font-style: oblique;
+    }
+
+
+    .container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Adjust for better responsiveness */
+        gap: 20px;
+        padding: 30px;
+        justify-items: center;
+    }
+
+    .card {
+        background: #fff;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        padding: 15px;
+        font-size: 20px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: transform 0.3s ease-in-out;
+        width: 100%;
+        max-width: 300px; /* Ensure consistent card size */
+    }
+
+    .card:hover {
+        transform: scale(1.05);
+    }
+
+    .card img {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+        border-bottom: 2px solid #ddd;
+    }
+
+    .card h3 {
+        font-size: 18px;
+        margin: 10px 0;
+        color: #333;
+        text-decoration: none;
+    }
+
+    .price {
+        color: #04AA6D;
+            font-size: 20px;
+            font-weight: bold;
+    }
+
+    .card button {
+     background-color: #ff6f61;
+            color: white;
+            border: none;
+            padding: 12px 18px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 15px;
+    }
+
+    .card button a {
+        color: white;
+        text-decoration: none;
+    }
+
+    .card button:hover {
+        background-color: #218838;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+        .container {
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        }
+    }
+</style>
+</head>
+<body>
+
+
+<!--<li style='font-size:24px' class='far'>&#xf2bd;</li>-->
+<div id="navbar">
+
+    <ul>
+
+        <li><a class="active" href="{% url 'product_management_app:viewproduct' %}">Home</a></li>
+<!--        <li><a href="#news">News</a></li>-->
+        <li><a href="{% url 'product_management_app:contact'%}">Contact</a></li>
+        <li style="float:right"><a href="/" style="color:red" >logout</a></li>
+        <li><a href="{% url 'shopping_cart_app:list_cart'%}">Cart</a></li>
+        <li><a href="{% url 'product_management_app:about'%}">About</a></li>
+<!--        <li><a href="/user_view">Profile</a></li>-->
+        <li>  <a class="navbar-brand" href="/user_view">
+            <img src="{% static 'images/image_user.png' %}" width="25" height="25" alt="">
+<!--            {{user}}-->
+            </a></li>
+
+
+    </ul>
+</div>
+<hr>
+<h1>PRODUCT LIST</h1>
+<!--<i style='font-size:24px' class='far'>&#xf2bd;</i>-->
+<center><h2>Welcome, {{ user }}</h2></center>
+<hr>
+<br><br>
+
+<!-- <img src="{{ user.profile_picture }}" alt="Profile Image" width="100" height="100" style="border-radius: 50%;">-->
+
+<div class="container">
+
+    {% for p in product %}
+        <a href="{% url 'product_management_app:productdetails' p.id  %}">
+        <div class="card">
+<img src="/media/{{ p.images }}" alt="Product Image">
+            <h3>{{ p.name }}</h3>
+            <p class="price">$ {{ p.price }}</p>
+            <br>
+            <button><a href="{% url 'shopping_cart_app:create_cart' p.id %}">Add to Cart</a></button>
+
+            <br>
+<!--            <button><a href="{% url 'product_management_app:productdetails' p.id  %}">details</a></button>-->
+        </div>
+        </a>
+    {% endfor %}
+</div>
+<!--    {% if messages %}-->
+<!--        {% for message in messages %}-->
+<!--            <div class="message">{{ message }}</div>-->
+<!--        {% endfor %}-->
+<!--    {% endif %}-->
+
+</body>
+</html>
+
+

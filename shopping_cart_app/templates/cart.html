@@ -98,8 +98,8 @@
             background-color: #28a745;
             color: white;
             border: none;
-            padding: 8px 12px;
-            font-size: 14px;
+            padding: 8px 30px;
+            font-size: 15px;
             border-radius: 5px;
             cursor: pointer;
             transition: background 0.3s;
@@ -108,18 +108,35 @@
         .btn:hover {
             background-color: #218838;
         }
-        .delete-btn {
+        .remove-btn {
             background-color: #dc3545;
+
+
         }
-        .delete-btn:hover {
+        .remove-btn:hover {
             background-color: #c82333;
         }
-        .delete-btn-btn {
+        .single-btn{
+            background-color: orange;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            font-size: 14px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+            text-decoration: none;
+        }
+        .single-btn:hover{
+        background-color:  #40E0D0;
+
+        }
+        .delete-btn {
             background-color: #dc3545;
             text-align:center;
             padding: 14px 30px;
         }
-        .delete-btn-btn:hover {
+        .delete-btn:hover {
             background-color: #FFCCCB;
 
         }
@@ -127,7 +144,7 @@
             background-color: orange;
             color: white;
             padding: 10px 52px;
-            font-size: 14px;
+
             font-weight: 900;
             border-radius: 5px;
             text-decoration: none;
@@ -156,6 +173,8 @@
 </div>
 <hr>
 <center><h1>Shopping Cart</h1></center>
+<p>{{total}}</p>
+
 <br><br>
 <div class="container">
     <a class="btn" href="/view_product/">⬅ Back to Products</a>
@@ -168,22 +187,28 @@
             <h2>{{ item.product_id.name }} - ${{ item.product_id.price }}</h2>
             <p class="price">Quantity: {{ item.quantity }}</p>
 
+
             <div class="actions">
-                <button class="btn delete-btn">
-                    <a href="{% url 'shopping_cart_app:remove_cart' item.id %}" style="color: white; text-decoration: none;">Remove</a>
-                </button>
+
+                    <a href="{% url 'shopping_cart_app:remove_cart' item.id %}" style="color: white; text-decoration: none;"> <button class="btn remove-btn"> - </button></a>
+
 
                 <form action="{% url 'shopping_cart_app:update_cart' item.id %}" method="POST">
                     {% csrf_token %}
                     <input type="number" name="quantity" class="quantity-input" value="{{ item.quantity }}" min="1">
-                    <button type="submit" class="btn">Update</button>
+                    <button type="submit" class="btn"> + </button>
                 </form>
+                  <a href="{% url 'shopping_cart_app:single_cart_checkout' item.id %}">
+                <center><p><button class=" btn single-btn" type="button">Buy</button></p></center>
+                </a>
+                <p>{{total}}</p>
+
             </div>
         </div>
     </div>
     {% endfor %}
     <br>
-    <center><button class="btn  delete-btn-btn">
+    <center><button class="btn  delete-btn">
 
         <a href="{% url 'shopping_cart_app:delete_cart'  %}" style="color: white; text-decoration: none;">Delete All</a>
     </button></center>

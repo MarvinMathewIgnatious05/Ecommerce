@@ -46,6 +46,7 @@ def list_cart(request):
     cart_products = Cart.objects.filter(user=request.user).all()
     # print(cart_products)
     total_price = sum(item.product_id.price * item.quantity for item in cart_products)
+
     for item in cart_products:
         total_item+=item.quantity
         # print(total_item,"jjjjjjjj")
@@ -56,38 +57,59 @@ def list_cart(request):
 
 
 
-def remove_cart(request,id):
 
-    cart = Cart.objects.get(id=id)
-    cart.delete()
-    # messages.success(request,"deleted successfully")
+
+def remove_cart(request, id):
+    cart_product = Cart.objects.get(id=id)
+    if cart_product.quantity > 1:
+        cart_product.quantity -= 1  # Decrease quantity by one
+        # print(cart_product.product_id.price,"??????????????????????????????????????????")
+        cart_product.save()
+    else:
+        cart_product.delete()  # If quantity reaches zero, remove from cart
+    return redirect("shopping_cart_app:list_cart")
+
+
+#increasing the quantity
+def update_cart(request,id):
+    cart_product = Cart.objects.get(id=id)
+    if cart_product.quantity >0:
+        cart_product.quantity +=1
+        cart_product.save()
+    else:
+        pass
     return redirect("shopping_cart_app:list_cart")
 
 
 
 
-def update_cart(request, id):
-    if request.method == "POST":
-        quantity = int(request.POST.get("quantity", 1))
-
-        cart_item, created = Cart.objects.get_or_create(id=id, defaults={"quantity": quantity})
-
-        if not created:
-            cart_item.quantity = quantity
-            cart_item.save()
-
-        return redirect("shopping_cart_app:list_cart")
+# def update_cart(request, id):
+#     if request.method == "POST":
+#         quantity = int(request.POST.get("quantity", 1))
+#
+#         cart_item, created = Cart.objects.get_or_create(id=id, defaults={"quantity": quantity})
+#
+#         if not created:
+#             cart_item.quantity = quantity
+#             cart_item.save()
+#
+#         return redirect("shopping_cart_app:list_cart")
 
 
 
 def delete_cart(request):
 
-    cart = Cart.objects.filter(user=request.user).all()
-    cart.delete()
+    cart_product = Cart.objects.filter(user=request.user).all()
+    cart_product.delete()
     return redirect("shopping_cart_app:list_cart")
 
 
+def single_cart_checkout(request,id):
+    cart_product = Cart.objects.get(id=id)
+    total_price = cart_product.product_id.price * cart_product.quantity
+    print(total_price,"calculated sssssssssssssssssssssss")
 
+    return render(request,"checkout.html",{"total_price":total_price,"cart_item": cart_product})
 
 
 @login_required(login_url="user_login")

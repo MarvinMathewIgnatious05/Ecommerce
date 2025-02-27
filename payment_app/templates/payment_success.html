@@ -20,8 +20,18 @@
             object-fit: cover;
             border: 3px solid #3498db;
         }
-        .btn btn-refund{
-        font-size:30px;
+         .btn {
+            color: white;
+            border: none;
+            padding: 8px 30px;
+            font-size: 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+            text-decoration: none;
+        }
+        .btn-refund{
+        font-size:20px;
         background-color:green;
         }
 
@@ -30,25 +40,30 @@
 <body>
     <div class="container mt-5">
         <br><br>
-        <h2 style="color:green; font-size:40px;">Payment Successful!</h2>
+        <h1 style="color:green; font-size:40px;">Payment Successful!</h1>
         <br><br>
         <p>
             <img src="{% static 'images/green_tik.jpg' %}" width="55" height="55" alt="Success">
         </p>
 <!--        <br>-->
 <!--        <p>Payment ID: {{ payment_id }}</p>-->
-<!--        <p>Sale ID: {{ sale_id }}</p> -->
+<!--        <p>Sale ID: {{ sale_id }}</p>-->
 <!--        <p>Amount: ${{ amount }}</p>-->
 <!--        <br>-->
         <p> <strong>Thank you for your purchase! </strong></p>
-        <br><br>
+        <br>
         <a href="{% url 'product_management_app:viewproduct' %}" style="width:15%;" class="btn btn-success">Done</a>
         <br><br>
-        <p> do you want refund? </p>
+
+         <a href="{% url 'bill_receipt' payment_id=payment_id %}" class="btn btn-primary">Download Receipt</a>
+
+        <br><br>
+        <p><strong>do you want refund? </strong> </p>
         <br>
+
       <form action="{% url 'payment_refund' payment_id=payment_id %}" method="post" style="display: inline;">
     {% csrf_token %}
-    <button type="submit" class="btn btn-refund" >Request Refund</button>
+    <button type="submit" class="btn btn-refund">Request Refund</button>
 </form>
 
     </div>

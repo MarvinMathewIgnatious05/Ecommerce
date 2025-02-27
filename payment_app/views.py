@@ -4,8 +4,12 @@ from django.conf import settings
 from django.shortcuts import render, redirect
 from shopping_cart_app.models import Cart
 from .models import Payment
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-from product_management_app.models import Product
+
+
 
 
 
@@ -18,7 +22,7 @@ paypalrestsdk.configure({
     "client_secret": settings.PAYPAL_CLIENT_SECRET
 })
 
-
+@login_required(login_url="user_login")
 def create_payment(request):
     user = request.user
     cart_items = Cart.objects.filter(user=user)
@@ -59,7 +63,7 @@ def create_payment(request):
     else:
         return render(request, "error.html", {"error": payment.error})
 
-
+@login_required(login_url="user_login")
 def payment_success(request):
     payment_id = request.GET.get("paymentId")
     payer_id = request.GET.get("PayerID")
@@ -108,6 +112,8 @@ def payment_success(request):
 #     return render(request, "error.html", {"error": "Invalid Payment ID"})
 
 
+
+@login_required(login_url="user_login")
 def payment_cancel(request):
     return render(request, "payment_cancel.html")
 
@@ -117,7 +123,7 @@ def payment_cancel(request):
 
 
 
-
+@login_required(login_url="user_login")
 # Refund Payment View
 def refund_payment(request, payment_id):
     try:
@@ -156,3 +162,44 @@ def refund_payment(request, payment_id):
     except Payment.DoesNotExist:
         return render(request, "error.html", {"error": "Payment not found."})
 
+
+
+
+
+@login_required(login_url="user_login")
+def bill_receipt(request, payment_id):
+    payment = Payment.objects.get( paypal_payment_id=payment_id)
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="receipt_{payment_id}.pdf"'
+
+    # Create PDF
+    pdf = canvas.Canvas(response, pagesize=letter)
+    width, height = letter
+
+    pdf.setFont("Helvetica-Bold", 20)
+    pdf.drawString(200, height - 50, "Payment Receipt")
+
+    pdf.setFont("Helvetica", 12)
+    pdf.drawString(50, height - 100, f"Payment ID: {payment.paypal_payment_id}")
+    pdf.drawString(50, height - 120, f"Sale ID: {payment.paypal_sale_id if payment.paypal_sale_id else 'N/A'}")
+    pdf.drawString(50, height - 140, f"User: {payment.user.username}")
+    pdf.drawString(50, height - 160, f"Amount Paid: ${payment.amount}")
+    pdf.drawString(50, height - 180, f"Status: {payment.status}")
+    pdf.drawString(50, height - 200, f"Date: {payment.created_on.strftime('%Y-%m-%d %H:%M:%S')}")
+
+    pdf.line(50, height - 220, 550, height - 220)  # Line separator
+
+    pdf.drawString(50, height - 250, "Products Purchased:")
+
+    y = height - 270
+    for product in payment.product.all():
+        pdf.drawString(50, y, f"- {product.name}  (${product.price}) ")
+        y -= 20
+
+    pdf.drawString(50, y - 30, "Thank you for your purchase!")
+
+    pdf.showPage()
+    pdf.save()
+
+    return response

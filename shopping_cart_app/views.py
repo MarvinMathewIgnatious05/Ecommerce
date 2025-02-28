@@ -107,7 +107,7 @@ def delete_cart(request):
 def single_cart_checkout(request,id):
     cart_product = Cart.objects.get(id=id)
     total_price = cart_product.product_id.price * cart_product.quantity
-    print(total_price,"calculated sssssssssssssssssssssss")
+    # print(total_price,"calculated sssssssssssssssssssssss")
 
     return render(request,"checkout.html",{"total_price":total_price,"cart_item": cart_product})
 

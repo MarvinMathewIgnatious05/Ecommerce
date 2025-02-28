@@ -9,6 +9,7 @@ class Payment(models.Model):
         ("COMPLETED", "Completed"),
         ("FAILED", "Failed"),
         ("CANCELED", "Canceled"),
+        ("REFUNDED", "Refunded"),
     ]
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

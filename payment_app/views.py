@@ -120,52 +120,40 @@ def payment_cancel(request):
 
 
 
-
-
-
 @login_required(login_url="user_login")
-# Refund Payment View
 def refund_payment(request, payment_id):
-    try:
-        payment = Payment.objects.get(paypal_payment_id=payment_id)
-        if payment.status != "COMPLETED":
-            return render(request, "error.html", {"error": "Only completed payments can be refunded."})
+    # Fetch payment from database
+    payment = Payment.objects.filter(paypal_payment_id=payment_id).first()
 
-        sale_id = None
-        paypal_payment = paypalrestsdk.Payment.find(payment_id)
-
-        for transaction in paypal_payment.transactions:
-            for related_resource in transaction.related_resources:
-                if 'sale' in related_resource:
-                    sale_id = related_resource['sale']['id']
-                    break
-
-        if not sale_id:
-            return render(request, "error.html", {"error": "Sale ID not found for refund."})
-
-        sale = paypalrestsdk.Sale.find(sale_id)
-        refund = sale.refund({
-            "amount": {
-                "total": str(payment.amount),  # Ensure total is a string
-                "currency": "USD"
-            }
-        })
-
-
-        if refund.success():
-            payment.status = "REFUNDED"
-            payment.save()
-            return render(request, "refund_success.html")
-        else:
-            return render(request, "error.html", {"error": refund.error})
-
-    except Payment.DoesNotExist:
+    if not payment:
         return render(request, "error.html", {"error": "Payment not found."})
 
+    if payment.status != "COMPLETED":
+        return render(request, "error.html", {"error": "Only completed payments can be refunded."})
+
+    if not payment.paypal_sale_id:
+        return render(request, "error.html", {"error": "Sale ID missing for refund."})
+
+    # Refund the sale using PayPal
+    sale = paypalrestsdk.Sale.find(payment.paypal_sale_id)
+    refund = sale.refund({
+        "amount": {
+            "total": str(payment.amount),  # Ensure the amount is a string
+            "currency": "USD"
+        }
+    })
+
+    if refund.success():
+        payment.status = "REFUNDED"
+        payment.save()
+        return render(request, "refund_success.html", {"payment_id": payment.paypal_payment_id, "amount": payment.amount})
+
+    return render(request, "error.html", {"error": "Refund failed. Please try again."})
 
 
 
 
+#bill receipt for success payment
 @login_required(login_url="user_login")
 def bill_receipt(request, payment_id):
     payment = Payment.objects.get( paypal_payment_id=payment_id)
